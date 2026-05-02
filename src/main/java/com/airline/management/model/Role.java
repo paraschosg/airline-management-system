@@ -5,5 +5,4 @@ public enum Role {
     CUSTOMER,
     FLIGHT_ADMIN,
     SYSTEM_ADMIN
-
 }

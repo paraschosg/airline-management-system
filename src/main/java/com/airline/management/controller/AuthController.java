@@ -13,13 +13,11 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    // ✅ REGISTER
     @PostMapping("/register")
     public User register(@RequestBody User user) {
         return userService.register(user);
     }
 
-    // ✅ LOGIN
     @PostMapping("/login")
     public User login(@RequestBody LoginRequest request) {
         User user = userService.findByUsername(request.getUsername());

@@ -1,6 +1,5 @@
 package com.airline.management.controller;
 
-import com.airline.management.dto.LoginRequest;
 import com.airline.management.model.User;
 import com.airline.management.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

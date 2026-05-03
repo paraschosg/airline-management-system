@@ -1,8 +1,8 @@
 package com.airline.management.controller;
 
+import com.airline.management.dto.LoginRequest;
 import com.airline.management.model.User;
 import com.airline.management.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class AuthController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/register")
     public User register(@RequestBody User user) {
@@ -20,16 +23,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public User login(@RequestBody LoginRequest request) {
-        User user = userService.findByUsername(request.getUsername());
-
-        if (user == null) {
-            throw new RuntimeException("User not found");
-        }
-
-        if (!user.getPassword().equals(request.getPassword())) {
-            throw new RuntimeException("Wrong password");
-        }
-
-        return user;
+        return userService.login(request.getUsername(), request.getPassword());
     }
 }

@@ -1,4 +1,4 @@
-create table users
+/*create table users
 (
     id       int auto_increment
         primary key,
@@ -14,4 +14,4 @@ create table users
     constraint username
         unique (username)
 );
-
+*/

@@ -1,4 +1,4 @@
-create table customers
+/*create table customers
 (
     id      int auto_increment
         primary key,
@@ -15,3 +15,4 @@ create table customers
 create index user_id
     on customers (user_id);
 
+*/

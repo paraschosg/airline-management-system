@@ -1,4 +1,4 @@
-create table reservations
+/*create table reservations
 (
     id           int auto_increment
         primary key,
@@ -24,3 +24,4 @@ create index customer_id
 create index flight_id
     on reservations (flight_id);
 
+*/

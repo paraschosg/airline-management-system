@@ -1,4 +1,4 @@
-create table flights
+/*create table flights
 (
     id            int auto_increment
         primary key,
@@ -17,3 +17,4 @@ create table flights
         unique (flight_number)
 );
 
+*/

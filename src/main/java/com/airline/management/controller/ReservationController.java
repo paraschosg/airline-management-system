@@ -4,6 +4,7 @@ import com.airline.management.model.Reservation;
 import com.airline.management.model.User;
 import com.airline.management.service.ReservationService;
 import org.springframework.web.bind.annotation.*;
+import com.airline.management.dto.UpdateReservationRequest;
 
 import java.util.List;
 
@@ -31,5 +32,12 @@ public class ReservationController {
     @PostMapping("/user")
     public List<Reservation> getUserReservations(@RequestBody User user) {
         return reservationService.getUserReservations(user);
+    }
+    @PutMapping("/{id}")
+    public Reservation updateReservation(
+            @PathVariable Long id,
+            @RequestBody UpdateReservationRequest request
+    ) {
+        return reservationService.updateReservation(id, request);
     }
 }

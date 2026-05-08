@@ -1,9 +1,11 @@
 package com.airline.management.service;
 
+import com.airline.management.dto.UpdateReservationRequest;
 import com.airline.management.model.*;
 import com.airline.management.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -48,6 +50,25 @@ public class ReservationService {
         Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new RuntimeException("Reservation not found"));
 
         reservation.setStatus(ReservationStatus.CANCELLED);
+
+        return reservationRepository.save(reservation);
+    }
+    public Reservation updateReservation(Long reservationId, UpdateReservationRequest request) {
+
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new RuntimeException("Reservation not found"));
+
+        FlightStatus status = reservation.getFlight().getStatus();
+
+        if (status == FlightStatus.STAFFED) {
+            throw new RuntimeException("Cannot update reservation when flight is STAFFED");
+        }
+
+        reservation.setType(
+                ReservationType.valueOf(request.getType().toUpperCase())
+        );
+
+        reservation.setUpdatedAt(LocalDateTime.now());
 
         return reservationRepository.save(reservation);
     }

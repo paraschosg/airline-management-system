@@ -28,15 +28,11 @@ public class Flight {
 
     @Column(nullable = false)
     private int totalSeats;
-<<<<<<< HEAD
-    private int totalRows;
-=======
 
     @Column(nullable = false)
     private int totalRows;
 
     @Column(nullable = false)
->>>>>>> 0b0fa15 (Local changes to Flight)
     private int seatsPerRow;
 
     @Column(nullable = false)

@@ -1,5 +1,7 @@
 package com.airline.management.controller;
 
+import com.airline.management.dto.ReservationResponseDTO;
+import com.airline.management.dto.ReservationSearchRequest;
 import com.airline.management.model.Reservation;
 import com.airline.management.model.User;
 import com.airline.management.service.ReservationService;
@@ -33,11 +35,25 @@ public class ReservationController {
     public List<Reservation> getUserReservations(@RequestBody User user) {
         return reservationService.getUserReservations(user);
     }
+    @GetMapping("/{id}/{userId}")
+    public ReservationResponseDTO getReservation(
+            @PathVariable Long id,
+            @PathVariable Long userId) {
+        return reservationService.getReservation(id, userId);
+    }
     @PutMapping("/{id}")
     public Reservation updateReservation(
             @PathVariable Long id,
             @RequestBody UpdateReservationRequest request
-    ) {
+    )
+    {
         return reservationService.updateReservation(id, request);
+    }
+    @PostMapping("/search/{userId}")
+    public List<Reservation> searchReservations(
+            @PathVariable Long userId,
+            @RequestBody ReservationSearchRequest request
+    ) {
+        return reservationService.searchReservations(request, userId);
     }
 }

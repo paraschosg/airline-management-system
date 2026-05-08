@@ -14,6 +14,9 @@ public class User {
     @Column(unique = true)
     private String username;
 
+    @Column(unique = true)
+    private String identityNumber;
+
     private String password;
     private String email;
 
@@ -35,6 +38,9 @@ public class User {
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
+
+    public String getIdentityNumber() { return identityNumber; }
+    public void setIdentityNumber(String identityNumber) { this.identityNumber = identityNumber; }
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }

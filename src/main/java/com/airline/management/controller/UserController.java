@@ -19,4 +19,9 @@ public class UserController {
     public User getUser(@PathVariable String username) {
         return userService.findByUsername(username);
     }
+
+    @PostMapping
+    public User createUser(@RequestBody User user) {
+        return userService.saveUser(user);
+    }
 }

@@ -18,7 +18,6 @@ public class UserService {
 
     public User register(User user) {
 
-        // username unique
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new RuntimeException("Username already exists");
         }
@@ -55,5 +54,9 @@ public class UserService {
 
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public User saveUser(User user){
+        return userRepository.save(user);
     }
 }

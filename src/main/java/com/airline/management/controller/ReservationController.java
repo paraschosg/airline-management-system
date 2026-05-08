@@ -27,7 +27,7 @@ public class ReservationController {
     public Reservation cancelReservation(@PathVariable Long id) {
         return reservationService.cancelReservation(id);
     }
-
+ 
     @PostMapping("/user")
     public List<Reservation> getUserReservations(@RequestBody User user) {
         return reservationService.getUserReservations(user);

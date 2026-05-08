@@ -2,40 +2,23 @@ package com.airline.management.dto;
 
 import com.airline.management.model.Role;
 
-public class RegisterRequest {
+public class UpdateUserRequest {
 
-    private String username;
-    private String password;
     private String email;
-
     private String firstName;
     private String lastName;
 
-    private Role role;
-
-    private String afm;
     private String address;
+    private String afm;
 
     private String employeeCode;
     private String identityNumber;
 
-    public RegisterRequest() {}
+    private Role role;
 
-    public String getUsername() {
-        return username;
-    }
+    private boolean active;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public UpdateUserRequest() {}
 
     public String getEmail() {
         return email;
@@ -61,12 +44,12 @@ public class RegisterRequest {
         this.lastName = lastName;
     }
 
-    public Role getRole() {
-        return role;
+    public String getAddress() {
+        return address;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getAfm() {
@@ -75,14 +58,6 @@ public class RegisterRequest {
 
     public void setAfm(String afm) {
         this.afm = afm;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getEmployeeCode() {
@@ -99,5 +74,21 @@ public class RegisterRequest {
 
     public void setIdentityNumber(String identityNumber) {
         this.identityNumber = identityNumber;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

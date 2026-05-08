@@ -1,6 +1,7 @@
 package com.airline.management.controller;
 
 import com.airline.management.dto.LoginRequest;
+import com.airline.management.dto.RegisterRequest;
 import com.airline.management.model.User;
 import com.airline.management.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +18,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        return userService.register(user);
+    public User register(@RequestBody RegisterRequest request) {
+        return userService.register(request);
     }
 
     @PostMapping("/login")

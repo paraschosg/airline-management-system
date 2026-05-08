@@ -21,7 +21,7 @@ public class Flight {
     private LocalTime flightTime;
 
     private int totalSeats;
-    private int rows;
+    private int totalRows;
     private int seatsPerRow;
     private int businessRows;
 
@@ -50,8 +50,8 @@ public class Flight {
     public int getTotalSeats() { return totalSeats; }
     public void setTotalSeats(int totalSeats) { this.totalSeats = totalSeats; }
 
-    public int getRows() { return rows; }
-    public void setRows(int rows) { this.rows = rows; }
+    public int getTotalRows() { return totalRows; }
+    public void setTotalRows(int totalRows) { this.totalRows = totalRows; }
 
     public int getSeatsPerRow() { return seatsPerRow; }
     public void setSeatsPerRow(int seatsPerRow) { this.seatsPerRow = seatsPerRow; }

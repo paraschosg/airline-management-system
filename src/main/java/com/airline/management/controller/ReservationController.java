@@ -1,12 +1,11 @@
 package com.airline.management.controller;
 
-import com.airline.management.dto.ReservationResponseDTO;
-import com.airline.management.dto.ReservationSearchRequest;
+import com.airline.management.dto.*;
 import com.airline.management.model.Reservation;
+import com.airline.management.model.ReservationType;
 import com.airline.management.model.User;
 import com.airline.management.service.ReservationService;
 import org.springframework.web.bind.annotation.*;
-import com.airline.management.dto.UpdateReservationRequest;
 
 import java.util.List;
 
@@ -55,5 +54,31 @@ public class ReservationController {
             @RequestBody ReservationSearchRequest request
     ) {
         return reservationService.searchReservations(request, userId);
+    }
+    @GetMapping("/flight/{flightId}/available-seats")
+    public List<SeatDTO> getAvailableSeats(
+            @PathVariable Long flightId,
+            @RequestParam ReservationType type
+    ) {
+        return reservationService.getAvailableSeats(flightId, type);
+    }
+    @PutMapping("/{reservationId}/seat")
+    public Reservation assignSeat(
+            @PathVariable Long reservationId,
+            @RequestParam int row,
+            @RequestParam int column
+    ) {
+        return reservationService.assignSeat(reservationId, row, column);
+    }
+    @PutMapping("/{id}/change-seat")
+    public Reservation changeSeat(
+            @PathVariable Long id,
+            @RequestBody ChangeSeatRequest request
+    ) {
+        return reservationService.changeSeat(id, request);
+    }
+    @PutMapping("/{id}/release-seat")
+    public Reservation releaseSeat(@PathVariable Long id) {
+        return reservationService.releaseSeat(id);
     }
 }

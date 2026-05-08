@@ -29,7 +29,8 @@ public class Flight {
     @Column(nullable = false)
     private int totalSeats;
 
-
+    @Column(nullable = false)
+    private int totalRows;
     private int seatsPerRow;
 
     @Column(nullable = false)

@@ -4,6 +4,7 @@ import com.airline.management.dto.UpdateUserRequest;
 import com.airline.management.model.User;
 import com.airline.management.service.UserService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -53,5 +54,10 @@ public class UserController {
 
         userService.deleteUser(id);
         return "User has been deleted";
+    }
+
+    @PostMapping("/import")
+    public String importUser(@RequestParam("file") MultipartFile file) {
+        return userService.importUsers(file);
     }
 }

@@ -9,6 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 import java.util.Optional;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 @Service
 public class UserService {
@@ -100,5 +106,42 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
 
         userRepository.delete(user);
+    }
+
+    public String importUsers(MultipartFile file) {
+
+        try{
+
+            Reader reader = new InputStreamReader(file.getInputStream());
+
+            CSVParser scvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader());
+
+            for(CSVRecord record : scvParser) {
+
+                String username = record.get("username");
+                if(userRepository.existsByUsername(username)){
+                    continue;
+                }
+
+                User user = new User();
+
+                user.setUsername(username);
+                user.setPassword(record.get("password"));
+                user.setEmail(record.get("email"));
+                user.setFirstName(record.get("firstName"));
+                user.setLastName(record.get("lastName"));
+                user.setRole(Role.valueOf(record.get("role")));
+                user.setAfm(record.get("afm"));
+                user.setAddress(record.get("address"));
+                user.setEmployeeCode(record.get("employeeCode"));
+                user.setIdentityNumber(record.get("identityNumber"));
+                user.setActive(true);
+                userRepository.save(user);
+            }
+
+            return "User has been imported";
+        }catch(Exception e){
+            throw new RuntimeException("Error importing");
+        }
     }
 }

@@ -18,10 +18,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     List<Reservation> findByUserAndStatus(User user, ReservationStatus status);
 
-    boolean existsByFlightAndSeatRowAndSeatColumn(
+    boolean existsByFlightAndSeatRowAndSeatColumnAndStatus(
             Flight flight,
             Integer seatRow,
-            Integer seatColumn
-    );
-
-}
+            Integer seatColumn,
+            ReservationStatus reservationStatus);
+    }

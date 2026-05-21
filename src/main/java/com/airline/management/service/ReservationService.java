@@ -44,10 +44,11 @@ public class ReservationService {
         if (reservation.getSeatRow() != null && reservation.getSeatColumn() != null) {
 
             boolean exists = reservationRepository
-                    .existsByFlightAndSeatRowAndSeatColumn(
+                    .existsByFlightAndSeatRowAndSeatColumnAndStatus(
                             reservation.getFlight(),
                             reservation.getSeatRow(),
-                            reservation.getSeatColumn()
+                            reservation.getSeatColumn(),
+                            ReservationStatus.CREATED
                     );
 
             if (exists) {
@@ -75,12 +76,12 @@ public class ReservationService {
             );
         }
 
-        reservation.setStatus(ReservationStatus.CANCELLED);
+
 
         // release seat automatically
         reservation.setSeatRow(null);
         reservation.setSeatColumn(null);
-
+        reservation.setStatus(ReservationStatus.CANCELLED);
         reservation.setUpdatedAt(LocalDateTime.now());
 
         return reservationRepository.save(reservation);
@@ -162,7 +163,11 @@ public class ReservationService {
         Flight flight = flightRepository.findById(flightId)
                 .orElseThrow(() -> new RuntimeException("Flight not found"));
 
-        List<Reservation> reserved = reservationRepository.findByFlight(flight);
+        List<Reservation> reserved =
+                reservationRepository.findByFlightAndStatus(
+                        flight,
+                        ReservationStatus.CREATED
+                );
 
         Set<String> takenSeats = reserved.stream()
                 .filter(r -> r.getSeatRow() != null && r.getSeatColumn() != null)
@@ -212,8 +217,12 @@ public class ReservationService {
 
         // check if seat is taken
         boolean taken = reservationRepository
-                .existsByFlightAndSeatRowAndSeatColumn(flight, row, column);
-
+                .existsByFlightAndSeatRowAndSeatColumnAndStatus(
+                        flight,
+                        row,
+                        column,
+                        ReservationStatus.CREATED
+                );
         if (taken) {
             throw new RuntimeException("Seat already taken");
         }
@@ -260,7 +269,12 @@ public class ReservationService {
 
         // 3. check if seat exists already
         boolean taken = reservationRepository
-                .existsByFlightAndSeatRowAndSeatColumn(flight, newRow, newCol);
+                .existsByFlightAndSeatRowAndSeatColumnAndStatus(
+                        flight,
+                        newRow,
+                        newCol,
+                        ReservationStatus.CREATED
+                );
 
         if (taken) {
             throw new RuntimeException("Seat already taken");

@@ -33,8 +33,8 @@ public class FlightController {
         return flightService.findById(id);
     }
 
-    @GetMapping("/{flightNumber}")
-    public Flight getFlight(@PathVariable String flightNumber) {
+    @GetMapping("/number/{flightNumber}")
+    public Flight getFlightByNumber(@PathVariable String flightNumber) {
 
         return flightService.findByFlightNumber(flightNumber);
     }

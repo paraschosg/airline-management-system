@@ -1,5 +1,6 @@
 package com.airline.management.service;
 
+import com.airline.management.dto.UpdateFlightRequest;
 import com.airline.management.model.Flight;
 import com.airline.management.model.FlightStatus;
 import com.airline.management.repository.FlightRepository;
@@ -29,5 +30,39 @@ public class FlightService {
 
     public Flight findById(Long id) {
         return flightRepository.findById(id).orElseThrow(() -> new RuntimeException("Flight not found"));
+    }
+
+    public Flight findByFlightNumber(String flightNumber) {
+
+        return flightRepository.findByFlightNumber(flightNumber)
+                .orElseThrow(() -> new RuntimeException("Flight not found"));
+    }
+
+    public Flight updateFlight(Long id, UpdateFlightRequest request) {
+
+        Flight flight = flightRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Flight not found"));
+
+        flight.setAirplane(request.getAirplane());
+        flight.setFlightDate(request.getFlightDate());
+        flight.setFlightTime(request.getFlightTime());
+
+        flight.setTotalSeats(request.getTotalSeats());
+        flight.setTotalRows(request.getTotalRows());
+        flight.setSeatsPerRow(request.getSeatsPerRow());
+
+        flight.setBusinessRows(request.getBusinessRows());
+
+        flight.setStatus(request.getStatus());
+
+        return flightRepository.save(flight);
+    }
+
+    public void deleteFlight(Long id) {
+
+        Flight flight = flightRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Flight not found"));
+
+        flightRepository.delete(flight);
     }
 }

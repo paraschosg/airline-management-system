@@ -30,6 +30,11 @@ public class ReservationService {
 
         reservation.setCreatedAt(LocalDateTime.now());
         reservation.setStatus(ReservationStatus.CREATED);
+        if (reservation.getFlight().getStatus() != FlightStatus.CREATED) {
+            throw new RuntimeException(
+                    "Reservations allowed only for CREATED flights"
+            );
+        }
 
         if (reservation.getType() == ReservationType.ECONOMY) {
             reservation.setSeatRow(null);
@@ -59,7 +64,24 @@ public class ReservationService {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Reservation not found"));
 
+        FlightStatus flightStatus = reservation.getFlight().getStatus();
+
+        // cannot cancel if flight already completed/cancelled
+        if (flightStatus == FlightStatus.COMPLETED ||
+                flightStatus == FlightStatus.CANCELLED) {
+
+            throw new RuntimeException(
+                    "Cannot cancel reservation for completed/cancelled flight"
+            );
+        }
+
         reservation.setStatus(ReservationStatus.CANCELLED);
+
+        // release seat automatically
+        reservation.setSeatRow(null);
+        reservation.setSeatColumn(null);
+
+        reservation.setUpdatedAt(LocalDateTime.now());
 
         return reservationRepository.save(reservation);
     }
@@ -182,8 +204,10 @@ public class ReservationService {
 
         Flight flight = reservation.getFlight();
 
-        if (flight.getStatus() == FlightStatus.STAFFED) {
-            throw new RuntimeException("Flight is closed");
+        if (flight.getStatus() != FlightStatus.STAFFED) {
+            throw new RuntimeException(
+                    "Seat selection allowed only when flight is STAFFED"
+            );
         }
 
         // check if seat is taken
@@ -225,8 +249,10 @@ public class ReservationService {
         }
 
         // 2. check flight status
-        if (flight.getStatus() == FlightStatus.STAFFED) {
-            throw new RuntimeException("Flight is closed");
+        if (flight.getStatus() != FlightStatus.STAFFED) {
+            throw new RuntimeException(
+                    "Seat changes allowed only when flight is STAFFED"
+            );
         }
 
         int newRow = request.getNewRow();
@@ -266,6 +292,11 @@ public class ReservationService {
                 .orElseThrow(() -> new RuntimeException("Reservation not found"));
 
         Flight flight = reservation.getFlight();
+        if (flight.getStatus() != FlightStatus.STAFFED) {
+            throw new RuntimeException(
+                    "Seat release allowed only when flight is STAFFED"
+            );
+        }
 
         // 1. RULE: ECONOMY cannot release seat (according to your spec rules)
         if (reservation.getType() == ReservationType.ECONOMY) {

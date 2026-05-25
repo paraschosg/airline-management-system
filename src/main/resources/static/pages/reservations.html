@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Reservations</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h2>Airline Reservation System</h2>
+
+</header>
+
+<nav class="navbar">
+
+    <div class="logo">
+        Airline System
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/">Home</a>
+
+        <a href="/pages/flights.html">
+            Flights
+        </a>
+
+        <a href="/pages/reservations.html">
+            Reservations
+        </a>
+
+        <a href="/pages/seats.html">
+            Seats
+        </a>
+
+    </div>
+
+</nav>
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>Create Reservation</h2>
+
+        <label>User ID</label>
+
+        <input
+                type="number"
+                id="userId"
+                required
+        >
+
+        <label>Select Flight</label>
+
+        <select
+                id="flightId"
+                onchange="loadSeats()"
+        ></select>
+
+        <label>Reservation Type</label>
+
+        <select
+                id="type"
+                onchange="loadSeats()"
+        >
+
+            <option value="BUSINESS">
+                BUSINESS
+            </option>
+
+            <option value="NORMAL">
+                NORMAL
+            </option>
+
+            <option value="ECONOMY">
+                ECONOMY
+            </option>
+
+        </select>
+
+        <h2>Available Seats</h2>
+
+        <div id="availableSeats"></div>
+
+        <br><br>
+
+        <button onclick="createReservation()">
+            Create Reservation
+        </button>
+
+        <p id="message"></p>
+
+    </div>
+
+</div>
+
+<script>
+
+    let selectedRow = null;
+    let selectedColumn = null;
+
+    async function loadFlights() {
+
+        const response =
+            await fetch(
+                "http://localhost:8080/flights"
+            );
+
+        const flights =
+            await response.json();
+
+        const select =
+            document.getElementById("flightId");
+
+        select.innerHTML = "";
+
+        flights.forEach(flight => {
+
+            select.innerHTML += `
+
+                <option value="${flight.id}">
+
+                    ${flight.flightNumber}
+                    -
+                    ${flight.airplane}
+
+                </option>
+
+            `;
+        });
+
+        loadSeats();
+    }
+
+    async function loadSeats() {
+
+        const flightId =
+            document.getElementById("flightId").value;
+
+        const type =
+            document.getElementById("type").value;
+
+        if (!flightId) {
+            return;
+        }
+
+        const response =
+            await fetch(
+
+                `http://localhost:8080/api/reservations/available-seats/${flightId}?type=${type}`
+
+            );
+
+        const seats =
+            await response.json();
+
+        const seatsDiv =
+            document.getElementById(
+                "availableSeats"
+            );
+
+        seatsDiv.innerHTML = "";
+
+        if(type === "ECONOMY"){
+
+            seatsDiv.innerHTML = `
+                <p>
+                    Economy reservations
+                    do not need seat selection.
+                </p>
+            `;
+
+            return;
+        }
+
+        seats.forEach(seat => {
+
+            seatsDiv.innerHTML += `
+
+                <button
+                    class="seat-button"
+                    onclick="selectSeat(${seat.row}, ${seat.column})"
+                >
+
+                    ${seat.row}-${seat.column}
+
+                </button>
+
+            `;
+        });
+    }
+
+    function selectSeat(row, column) {
+
+        selectedRow = row;
+        selectedColumn = column;
+
+        alert(
+            `Selected seat: ${row}-${column}`
+        );
+    }
+
+    async function createReservation() {
+
+        const userId =
+            document.getElementById("userId").value;
+
+        const flightId =
+            document.getElementById("flightId").value;
+
+        const type =
+            document.getElementById("type").value;
+
+        if(!userId){
+
+            alert("Please enter User ID");
+
+            return;
+        }
+
+        if(
+            type !== "ECONOMY"
+            &&
+            (!selectedRow || !selectedColumn)
+        ){
+
+            alert("Please select a seat");
+
+            return;
+        }
+
+        const response =
+            await fetch(
+
+                "http://localhost:8080/api/reservations",
+
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        userId: userId,
+
+                        flightId: flightId,
+
+                        type: type,
+
+                        seatRow:
+                        selectedRow,
+
+                        seatColumn:
+                        selectedColumn
+                    })
+                }
+            );
+
+        if(response.ok){
+
+            document.getElementById(
+                "message"
+            ).innerHTML = `
+                Reservation Created Successfully
+            `;
+
+            loadSeats();
+
+        } else {
+
+            const error =
+                await response.text();
+
+            document.getElementById(
+                "message"
+            ).innerHTML = `
+                Reservation Failed:
+                ${error}
+            `;
+        }
+    }
+
+    window.onload = loadFlights;
+
+</script>
+
+</body>
+</html>

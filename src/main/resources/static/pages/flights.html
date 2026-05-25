@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flights</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header>
+    <h2>Flights</h2>
+</header>
+
+<nav class="navbar">
+
+    <div class="logo">
+        Airline System
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/">Home</a>
+
+        <a href="/pages/flights.html">
+            Flights
+        </a>
+
+        <a href="/pages/reservations.html">
+            Reservations
+        </a>
+
+        <a href="/pages/seats.html">
+            Seats
+        </a>
+
+    </div>
+
+</nav>
+
+<div class="container">
+
+    <div class="card">
+
+        <h3>Available Flights</h3>
+
+        <button onclick="loadFlights()">
+            Load Flights
+        </button>
+
+        <div id="flights"></div>
+
+    </div>
+
+</div>
+
+<script src="/js/flights.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seat Management</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header>
+    <h2>Seat Management</h2>
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <label>Flight ID</label>
+        <input type="number" id="flightId">
+
+        <label>Reservation Type</label>
+
+        <select id="type">
+            <option>BUSINESS</option>
+            <option>NORMAL</option>
+            <option>ECONOMY</option>
+        </select>
+
+        <button onclick="loadSeats()">
+            Show Available Seats
+        </button>
+
+    </div>
+
+    <div id="seatMap"></div>
+
+</div>
+<nav class="navbar">
+
+    <div class="logo">
+        Airline System
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/">Home</a>
+
+        <a href="/pages/flights.html">
+            Flights
+        </a>
+
+        <a href="/pages/reservations.html">
+            Reservations
+        </a>
+
+        <a href="/pages/seats.html">
+            Seats
+        </a>
+
+    </div>
+
+</nav>
+<script src="/js/seats.js"></script>
+
+</body>
+</html>

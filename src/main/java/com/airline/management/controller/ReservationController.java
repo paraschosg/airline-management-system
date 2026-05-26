@@ -21,8 +21,11 @@ public class ReservationController {
     }
 
     @PostMapping
-    public Reservation createReservation(@RequestBody Reservation reservation) {
-        return reservationService.createReservation(reservation);
+    public Reservation createReservation(
+            @RequestBody CreateReservationsRequest request
+    ) {
+
+        return reservationService.createReservation(request);
     }
 
     @PutMapping("/cancel/{id}")
@@ -80,5 +83,10 @@ public class ReservationController {
     @PutMapping("/{id}/release-seat")
     public Reservation releaseSeat(@PathVariable Long id) {
         return reservationService.releaseSeat(id);
+    }
+    @GetMapping
+    public List<Reservation> getAllReservations() {
+
+        return reservationService.getAllReservations();
     }
 }

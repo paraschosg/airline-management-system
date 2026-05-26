@@ -177,3 +177,33 @@ nav a:visited{
     color: #3498db;
 
 }
+table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    margin-top: 20px;
+}
+
+table th,
+table td {
+
+    border: 1px solid #ccc;
+
+    padding: 10px;
+
+    text-align: center;
+}
+
+table th {
+
+    background: #1e3a5f;
+
+    color: white;
+}
+
+table tr:nth-child(even) {
+
+    background: #f2f2f2;
+}

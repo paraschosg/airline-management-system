@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <title>Airline Management System</title>
+
+    <title>Reservations List</title>
 
     <link rel="stylesheet" href="/css/style.css">
+
 </head>
+
 <body>
-
-<header>
-    <h2>Airline Management System</h2>
-
-    <div id="userInfo">
-        Logged in as: Admin User
-    </div>
-</header>
 
 <nav class="navbar">
 
@@ -38,10 +35,6 @@
             Reservations List
         </a>
 
-        <a href="/pages/seats.html">
-            Seats
-        </a>
-
     </div>
 
 </nav>
@@ -49,14 +42,38 @@
 <div class="container">
 
     <div class="card">
-        <h1>Welcome</h1>
 
-        <p>
-            Airline reservation platform
-        </p>
+        <h2>Reservations</h2>
+
+        <table id="reservationsTable">
+
+            <thead>
+
+            <tr>
+
+                <th>ID</th>
+                <th>User</th>
+                <th>Flight</th>
+                <th>Seat</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Actions</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody id="reservationsBody"></tbody>
+
+        </table>
+
     </div>
 
 </div>
 
+
+<script src="/js/reservations-list.js"></script>
+
 </body>
+
 </html>

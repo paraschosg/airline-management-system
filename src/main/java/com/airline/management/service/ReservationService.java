@@ -26,39 +26,69 @@ public class ReservationService {
     }
 
     // CREATE
-    public Reservation createReservation(Reservation reservation) {
+    public Reservation createReservation(CreateReservationsRequest request) {
+
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Flight flight = flightRepository.findById(request.getFlightId())
+                .orElseThrow(() -> new RuntimeException("Flight not found"));
+
+        Reservation reservation = new Reservation();
+
+        reservation.setUser(user);
+
+        reservation.setFlight(flight);
+
+        System.out.println(request.getType());
+
+        reservation.setType(
+                ReservationType.valueOf(request.getType())
+        );
+
+        reservation.setSeatRow(request.getSeatRow());
+
+        reservation.setSeatColumn(request.getSeatColumn());
 
         reservation.setCreatedAt(LocalDateTime.now());
+
         reservation.setStatus(ReservationStatus.CREATED);
-        if (reservation.getFlight().getStatus() != FlightStatus.CREATED) {
+
+        if (flight.getStatus() != FlightStatus.CREATED) {
+
             throw new RuntimeException(
                     "Reservations allowed only for CREATED flights"
             );
         }
 
         if (reservation.getType() == ReservationType.ECONOMY) {
+
             reservation.setSeatRow(null);
             reservation.setSeatColumn(null);
         }
 
-        if (reservation.getSeatRow() != null && reservation.getSeatColumn() != null) {
+        if (reservation.getSeatRow() != null &&
+                reservation.getSeatColumn() != null) {
 
-            boolean exists = reservationRepository
-                    .existsByFlightAndSeatRowAndSeatColumnAndStatus(
-                            reservation.getFlight(),
-                            reservation.getSeatRow(),
-                            reservation.getSeatColumn(),
-                            ReservationStatus.CREATED
-                    );
+            boolean exists =
+                    reservationRepository
+                            .existsByFlightAndSeatRowAndSeatColumnAndStatus(
+                                    flight,
+                                    reservation.getSeatRow(),
+                                    reservation.getSeatColumn(),
+                                    ReservationStatus.CREATED
+                            );
 
             if (exists) {
+
                 throw new RuntimeException("Seat already taken");
             }
         }
-
+        System.out.println(request.getUserId());
+        System.out.println(request.getFlightId());
+        System.out.println(request.getType());
         return reservationRepository.save(reservation);
     }
-
     // CANCEL
     public Reservation cancelReservation(Long id) {
 
@@ -329,5 +359,9 @@ public class ReservationService {
         reservation.setUpdatedAt(LocalDateTime.now());
 
         return reservationRepository.save(reservation);
+    }
+    public List<Reservation> getAllReservations() {
+
+        return reservationRepository.findAll();
     }
 }

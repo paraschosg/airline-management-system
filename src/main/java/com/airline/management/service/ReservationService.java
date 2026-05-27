@@ -364,4 +364,8 @@ public class ReservationService {
 
         return reservationRepository.findAll();
     }
+    public List<Reservation> getReservationsByUser(Long userId){
+
+        return reservationRepository.findByUserId(userId);
+    }
 }

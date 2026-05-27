@@ -1,7 +1,15 @@
 async function loadReservations() {
 
+    // const response =
+    //     await fetch("http://localhost:8080/reservations");
+
+    const loggedUser =
+        JSON.parse(localStorage.getItem("loggedUser"));
+
     const response =
-        await fetch("http://localhost:8080/reservations");
+        await fetch(
+            `http://localhost:8080/reservations/user/${loggedUser.id}`
+        );
 
     const reservations =
         await response.json();

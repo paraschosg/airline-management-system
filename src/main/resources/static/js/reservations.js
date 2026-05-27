@@ -1,9 +1,26 @@
+const loggedUser =
+    JSON.parse(localStorage.getItem("loggedUser"));
+
+console.log(loggedUser);
+
+if (!loggedUser) {
+
+    window.location.href =
+        "/pages/login.html";
+}
+
 let selectedRow = null;
 let selectedColumn = null;
 
-async function loadFlights() {
+window.onload = function () {
 
-    console.log("LOAD FLIGHTS");
+    document.getElementById("loggedUser").innerHTML =
+        "Welcome " + loggedUser.username;
+
+    loadFlights();
+};
+
+async function loadFlights() {
 
     const response =
         await fetch("http://localhost:8080/flights");
@@ -38,16 +55,18 @@ async function loadFlights() {
 
 async function loadSeats() {
 
-    console.log("LOAD SEATS");
-
     const flightId =
         document.getElementById("flightId").value;
 
     const type =
         document.getElementById("type").value;
 
-    console.log("FLIGHT =", flightId);
-    console.log("TYPE =", type);
+    console.log(flightId);
+    console.log(type);
+
+    if (!flightId) {
+        return;
+    }
 
     const response =
         await fetch(
@@ -64,7 +83,7 @@ async function loadSeats() {
 
     container.innerHTML = "";
 
-    if(type === "ECONOMY") {
+    if (type === "ECONOMY") {
 
         container.innerHTML =
             "<p>Economy reservations do not require seat selection</p>";
@@ -83,10 +102,8 @@ async function loadSeats() {
             " Seat " +
             seat.column;
 
-        button.className =
-            "seat-button";
-
         button.style.padding = "10px";
+        button.style.margin = "5px";
         button.style.background = "green";
         button.style.color = "white";
         button.style.border = "none";
@@ -97,17 +114,11 @@ async function loadSeats() {
             selectedRow = seat.row;
             selectedColumn = seat.column;
 
-            document.getElementById("selectedRow").value =
-                seat.row;
-
-            document.getElementById("selectedColumn").value =
-                seat.column;
-
             alert(
                 "Selected Seat: " +
-                seat.row +
+                selectedRow +
                 "-" +
-                seat.column
+                selectedColumn
             );
         };
 
@@ -118,7 +129,7 @@ async function loadSeats() {
 async function createReservation() {
 
     const userId =
-        document.getElementById("userId").value;
+        loggedUser.id;
 
     const flightId =
         document.getElementById("flightId").value;
@@ -126,13 +137,9 @@ async function createReservation() {
     const type =
         document.getElementById("type").value;
 
-    console.log("USER ID =", userId);
-    console.log("FLIGHT ID =", flightId);
-    console.log("TYPE =", type);
+    if (type !== "ECONOMY") {
 
-    if(type !== "ECONOMY") {
-
-        if(!selectedRow || !selectedColumn) {
+        if (!selectedRow || !selectedColumn) {
 
             alert("Please select a seat");
 
@@ -168,16 +175,16 @@ async function createReservation() {
                 method: "POST",
 
                 headers: {
-                    "Content-Type":
-                        "application/json"
+                    "Content-Type": "application/json"
                 },
 
-                body:
-                    JSON.stringify(requestBody)
+                body: JSON.stringify(requestBody)
             }
         );
 
-    if(response.ok) {
+    console.log(response);
+
+    if (response.ok) {
 
         alert("Reservation Created");
 
@@ -197,31 +204,12 @@ async function createReservation() {
     }
 }
 
-window.onload = function () {
+function logout() {
 
-    loadFlights();
-};
-async function cancelReservation(id) {
+    localStorage.removeItem("loggedUser");
 
-    console.log("CANCEL ID =", id);
+    alert("Logged out");
 
-    const response = await fetch(
-        `http://localhost:8080/reservations/cancel/${id}`,
-        {
-            method: "PUT"
-        }
-    );
-
-    console.log(response);
-
-    if(response.ok){
-
-        alert("Reservation cancelled");
-
-        loadReservations();
-
-    } else {
-
-        alert("Cancel failed");
-    }
+    window.location.href =
+        "/pages/login.html";
 }

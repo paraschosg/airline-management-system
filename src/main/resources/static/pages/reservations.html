@@ -40,6 +40,8 @@
 
     </div>
 
+    <div id="loggedUser"></div>
+
 </nav>
 
 <div class="container">
@@ -48,13 +50,6 @@
 
         <h2>Create Reservation</h2>
 
-        <label>User ID</label>
-
-        <input
-                type="number"
-                id="userId"
-                required
-        >
 
         <label>Select Flight</label>
 
@@ -116,6 +111,10 @@
         </button>
 
         <p id="message"></p>
+
+        <button onclick="logout()">
+            Logout
+        </button>
 
     </div>
 

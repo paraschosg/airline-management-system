@@ -1,5 +1,6 @@
 package com.airline.management.controller;
 
+import com.airline.management.dto.LoginRequest;
 import com.airline.management.dto.UpdateUserRequest;
 import com.airline.management.model.User;
 import com.airline.management.service.UserService;
@@ -59,5 +60,14 @@ public class UserController {
     @PostMapping("/import")
     public String importUser(@RequestParam("file") MultipartFile file) {
         return userService.importUsers(file);
+    }
+
+    @PostMapping("/login")
+    public User login(@RequestBody LoginRequest request) {
+
+        return userService.login(
+                request.getUsername(),
+                request.getPassword()
+        );
     }
 }

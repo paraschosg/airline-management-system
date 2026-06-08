@@ -166,4 +166,37 @@ public class UserService {
 
         return userRepository.save(user);
     }
+
+    public List<User> searchUsers(String keyword) {
+
+        List<User> users =
+                userRepository.findByUsernameContainingIgnoreCase(keyword);
+
+        if(!users.isEmpty()){
+            return users;
+        }
+
+        users =
+                userRepository.findByLastNameContainingIgnoreCase(keyword);
+
+        if(!users.isEmpty()){
+            return users;
+        }
+
+        Optional<User> afmUser =
+                userRepository.findByAfm(keyword);
+
+        if(afmUser.isPresent()){
+            return List.of(afmUser.get());
+        }
+
+        Optional<User> idUser =
+                userRepository.findByIdentityNumber(keyword);
+
+        if(idUser.isPresent()){
+            return List.of(idUser.get());
+        }
+
+        return List.of();
+    }
 }

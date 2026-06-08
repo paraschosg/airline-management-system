@@ -1,6 +1,6 @@
 const loggedUser =
     JSON.parse(localStorage.getItem("loggedUser"));
-if(user.role !== "ADMIN"){
+if(loggedUser.role !== "SYSTEM_ADMIN"){
 
     const usersMenu =
         document.getElementById("usersMenu");

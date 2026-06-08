@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-
-
 <html lang="en">
+
 <head>
 
     <meta charset="UTF-8">
@@ -44,6 +43,10 @@
             Users
         </a>
 
+        <a href="/pages/profile.html">
+            My Profile
+        </a>
+
     </div>
 
 </nav>
@@ -53,6 +56,23 @@
     <div class="card">
 
         <h2>Users Management</h2>
+
+        <br>
+
+        <input
+                type="text"
+                id="searchInput"
+                placeholder="Search by Username / Last Name / AFM / ID Number">
+
+        <button onclick="searchUsers()">
+            Search
+        </button>
+
+        <button onclick="loadUsers()">
+            Show All
+        </button>
+
+        <br><br>
 
         <table>
 
@@ -89,4 +109,5 @@
 <script src="/js/users.js"></script>
 
 </body>
+
 </html>

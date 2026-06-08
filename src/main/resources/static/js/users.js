@@ -1,19 +1,20 @@
 const loggedUser =
     JSON.parse(localStorage.getItem("loggedUser"));
 
-if(!loggedUser){
+if (!loggedUser) {
 
     window.location.href =
         "/pages/login.html";
 }
 
-if(loggedUser.role !== "SYSTEM_ADMIN"){
+if (loggedUser.role !== "SYSTEM_ADMIN") {
 
     alert("Access Denied");
 
     window.location.href =
         "/pages/reservations.html";
 }
+
 async function loadUsers() {
 
     const response =
@@ -22,7 +23,10 @@ async function loadUsers() {
     const users =
         await response.json();
 
-    console.log(users);
+    renderUsers(users);
+}
+
+function renderUsers(users) {
 
     const tbody =
         document.getElementById("usersBody");
@@ -37,11 +41,11 @@ async function loadUsers() {
 
                 <td>${user.id}</td>
 
-                <td>${user.username}</td>
+                <td>${user.username ?? ""}</td>
 
-                <td>${user.email}</td>
+                <td>${user.email ?? ""}</td>
 
-                <td>${user.role}</td>
+                <td>${user.role ?? ""}</td>
 
                 <td>${user.active}</td>
 
@@ -60,13 +64,13 @@ async function loadUsers() {
                         Deactivate
 
                     </button>
-                    
-                     <button
+
+                    <button
                         onclick="deleteUser(${user.id})">
-                
+
                         Delete
-                
-                     </button>
+
+                    </button>
 
                 </td>
 
@@ -74,6 +78,28 @@ async function loadUsers() {
 
         `;
     });
+}
+
+async function searchUsers() {
+
+    const keyword =
+        document.getElementById("searchInput").value.trim();
+
+    if (keyword === "") {
+
+        loadUsers();
+        return;
+    }
+
+    const response =
+        await fetch(
+            `http://localhost:8080/users/search?keyword=${keyword}`
+        );
+
+    const users =
+        await response.json();
+
+    renderUsers(users);
 }
 
 async function activateUser(id) {
@@ -88,7 +114,7 @@ async function activateUser(id) {
             }
         );
 
-    if(response.ok){
+    if (response.ok) {
 
         alert("User Activated");
 
@@ -108,19 +134,20 @@ async function deactivateUser(id) {
             }
         );
 
-    if(response.ok){
+    if (response.ok) {
 
         alert("User Deactivated");
 
         loadUsers();
     }
 }
+
 async function deleteUser(id) {
 
     const answer =
         confirm("Delete this user?");
 
-    if(!answer){
+    if (!answer) {
         return;
     }
 
@@ -134,7 +161,7 @@ async function deleteUser(id) {
             }
         );
 
-    if(response.ok){
+    if (response.ok) {
 
         alert("User Deleted");
 
@@ -145,4 +172,5 @@ async function deleteUser(id) {
         alert("Delete Failed");
     }
 }
+
 window.onload = loadUsers;

@@ -53,4 +53,12 @@ public class FlightController {
 
         return "Flight deleted successfully";
     }
+
+    @PutMapping("/{id}/status")
+    public Flight changeStatus(
+            @PathVariable Long id,
+            @RequestParam String status
+    ) {
+        return flightService.changeStatus(id, status);
+    }
 }

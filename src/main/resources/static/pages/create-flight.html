@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Create Flight</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+
+<header>
+    <h2>Create Flight</h2>
+</header>
+
+<div class="container">
+
+    <div class="card">
+
+        <h3>New Flight</h3>
+
+        <form id="flightForm">
+
+            <input
+                    type="text"
+                    id="flightNumber"
+                    placeholder="Flight Number"
+                    required>
+
+            <input
+                    type="text"
+                    id="airplane"
+                    placeholder="Airplane"
+                    required>
+
+            <input
+                    type="date"
+                    id="flightDate"
+                    required>
+
+            <input
+                    type="time"
+                    id="flightTime"
+                    required>
+
+            <input
+                    type="number"
+                    id="totalSeats"
+                    placeholder="Total Seats"
+                    required>
+
+            <input
+                    type="number"
+                    id="totalRows"
+                    placeholder="Total Rows"
+                    required>
+
+            <input
+                    type="number"
+                    id="seatsPerRow"
+                    placeholder="Seats Per Row"
+                    required>
+
+            <input
+                    type="number"
+                    id="businessRows"
+                    placeholder="Business Rows"
+                    required>
+
+            <button type="submit">
+                Create Flight
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script src="/js/create-flight.js"></script>
+
+</body>
+</html>

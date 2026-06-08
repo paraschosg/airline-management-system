@@ -65,4 +65,16 @@ public class FlightService {
 
         flightRepository.delete(flight);
     }
+
+    public Flight changeStatus(Long id, String status) {
+
+        Flight flight = flightRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Flight not found"));
+
+        flight.setStatus(
+                FlightStatus.valueOf(status.toUpperCase())
+        );
+
+        return flightRepository.save(flight);
+    }
 }

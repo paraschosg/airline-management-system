@@ -1,13 +1,13 @@
 const loggedUser =
     JSON.parse(localStorage.getItem("loggedUser"));
 
-if(!loggedUser){
+if (!loggedUser) {
 
     window.location.href =
         "/pages/login.html";
 }
 
-async function loadProfile(){
+async function loadProfile() {
 
     const response =
         await fetch(
@@ -32,13 +32,24 @@ async function loadProfile(){
     document.getElementById("afm").value =
         user.afm || "";
 
+    document.getElementById("employeeCode").value =
+        user.employeeCode || "";
+
     document.getElementById("identityNumber").value =
         user.identityNumber || "";
 }
 
-async function updateProfile(){
+document.getElementById("profileForm")
+    .addEventListener("submit", updateProfile);
 
-    const body = {
+async function updateProfile(e) {
+
+    e.preventDefault();
+
+    const request = {
+
+        email:
+        document.getElementById("email").value,
 
         firstName:
         document.getElementById("firstName").value,
@@ -46,14 +57,14 @@ async function updateProfile(){
         lastName:
         document.getElementById("lastName").value,
 
-        email:
-        document.getElementById("email").value,
-
         address:
         document.getElementById("address").value,
 
         afm:
         document.getElementById("afm").value,
+
+        employeeCode:
+        document.getElementById("employeeCode").value,
 
         identityNumber:
         document.getElementById("identityNumber").value,
@@ -62,10 +73,7 @@ async function updateProfile(){
         loggedUser.role,
 
         active:
-        loggedUser.active,
-
-        employeeCode:
-        loggedUser.employeeCode
+        loggedUser.active
     };
 
     const response =
@@ -77,24 +85,21 @@ async function updateProfile(){
                 method: "PUT",
 
                 headers: {
-                    "Content-Type":
-                        "application/json"
+                    "Content-Type": "application/json"
                 },
 
-                body:
-                    JSON.stringify(body)
+                body: JSON.stringify(request)
             }
         );
 
-    if(response.ok){
+    if (response.ok) {
 
         alert("Profile Updated");
 
-    }else{
+    } else {
 
         alert("Update Failed");
     }
 }
 
-window.onload =
-    loadProfile;
+window.onload = loadProfile;

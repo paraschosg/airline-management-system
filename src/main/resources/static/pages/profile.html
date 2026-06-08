@@ -1,77 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <meta charset="UTF-8">
-
     <title>My Profile</title>
 
     <link rel="stylesheet" href="/css/style.css">
 
 </head>
-
 <body>
 
 <header>
-
-    <h2>My Profile</h2>
-
+    <h2>Airline Reservation System</h2>
 </header>
+
+<nav class="navbar">
+
+    <div class="logo">
+        Airline System
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/">Home</a>
+
+        <a href="/pages/flights.html">
+            Flights
+        </a>
+
+        <a href="/pages/reservations.html">
+            Reservations
+        </a>
+
+        <a href="/pages/profile.html">
+            Profile
+        </a>
+
+    </div>
+
+</nav>
 
 <div class="container">
 
     <div class="card">
 
-        <h3>Profile Information</h3>
+        <h2>My Profile</h2>
 
-        <input
-                type="text"
-                id="firstName"
-                placeholder="First Name">
+        <form id="profileForm">
 
-        <br><br>
+            <input
+                    type="text"
+                    id="firstName"
+                    placeholder="First Name">
 
-        <input
-                type="text"
-                id="lastName"
-                placeholder="Last Name">
+            <input
+                    type="text"
+                    id="lastName"
+                    placeholder="Last Name">
 
-        <br><br>
+            <input
+                    type="email"
+                    id="email"
+                    placeholder="Email">
 
-        <input
-                type="email"
-                id="email"
-                placeholder="Email">
+            <input
+                    type="text"
+                    id="address"
+                    placeholder="Address">
 
-        <br><br>
+            <input
+                    type="text"
+                    id="afm"
+                    placeholder="AFM">
 
-        <input
-                type="text"
-                id="address"
-                placeholder="Address">
+            <input
+                    type="text"
+                    id="employeeCode"
+                    placeholder="Employee Code">
 
-        <br><br>
+            <input
+                    type="text"
+                    id="identityNumber"
+                    placeholder="Identity Number">
 
-        <input
-                type="text"
-                id="afm"
-                placeholder="AFM">
+            <button type="submit">
+                Save Changes
+            </button>
 
-        <br><br>
-
-        <input
-                type="text"
-                id="identityNumber"
-                placeholder="Identity Number">
-
-        <br><br>
-
-        <button onclick="updateProfile()">
-
-            Save Changes
-
-        </button>
+        </form>
 
     </div>
 
@@ -80,5 +96,4 @@
 <script src="/js/profile.js"></script>
 
 </body>
-
 </html>

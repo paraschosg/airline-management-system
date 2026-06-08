@@ -1,6 +1,7 @@
 package com.airline.management.controller;
 
 import com.airline.management.dto.LoginRequest;
+import com.airline.management.dto.RegisterRequest;
 import com.airline.management.dto.UpdateUserRequest;
 import com.airline.management.model.User;
 import com.airline.management.service.UserService;
@@ -49,6 +50,17 @@ public class UserController {
     public User updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest request) {
         return userService.updateUser(id, request);
     }
+    @PutMapping("/{id}/deactivate")
+    public User deactivateUser(@PathVariable Long id) {
+
+        return userService.deactivateUser(id);
+    }
+
+    @PutMapping("/{id}/activate")
+    public User activateUser(@PathVariable Long id) {
+
+        return userService.activateUser(id);
+    }
 
     @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable Long id) {
@@ -69,5 +81,10 @@ public class UserController {
                 request.getUsername(),
                 request.getPassword()
         );
+    }
+    @PostMapping("/register")
+    public User register(@RequestBody RegisterRequest request) {
+
+        return userService.register(request);
     }
 }

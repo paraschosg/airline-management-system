@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
+
     <title>Airline Management System</title>
 
     <link rel="stylesheet" href="/css/style.css">
+
 </head>
+
 <body>
 
 <header>
+
     <h2>Airline Management System</h2>
 
-    <div id="userInfo">
-        Logged in as: Admin User
-    </div>
+    <div id="userInfo"></div>
+
 </header>
 
 <nav class="navbar">
@@ -24,7 +28,9 @@
 
     <div class="nav-links">
 
-        <a href="/">Home</a>
+        <a href="/">
+            Home
+        </a>
 
         <a href="/pages/flights.html">
             Flights
@@ -34,12 +40,16 @@
             Reservations
         </a>
 
-        <a href="/pages/reservations-list.html">
+        <a href="/pages/reservations-list.html" id="reservationsListMenu">
             Reservations List
         </a>
 
-        <a href="/pages/seats.html">
+        <a href="/pages/seats.html" id="seatsMenu">
             Seats
+        </a>
+
+        <a href="/pages/users.html" id="usersMenu">
+            Users
         </a>
 
     </div>
@@ -49,14 +59,48 @@
 <div class="container">
 
     <div class="card">
+
         <h1>Welcome</h1>
 
         <p>
-            Airline reservation platform
+            Airline Reservation Platform
         </p>
+
     </div>
 
 </div>
+
+<script>
+
+    const loggedUser =
+        JSON.parse(localStorage.getItem("loggedUser"));
+
+    if(!loggedUser){
+
+        window.location.href =
+            "/pages/login.html";
+    }
+
+    document.getElementById("userInfo").innerHTML =
+        "Logged in as: " +
+        loggedUser.username +
+        " (" +
+        loggedUser.role +
+        ")";
+
+    if(loggedUser.role !== "SYSTEM_ADMIN"){
+
+        document.getElementById("usersMenu").style.display =
+            "none";
+
+        document.getElementById("reservationsListMenu").style.display =
+            "none";
+
+        document.getElementById("seatsMenu").style.display =
+            "none";
+    }
+
+</script>
 
 </body>
 </html>

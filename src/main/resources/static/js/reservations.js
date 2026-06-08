@@ -1,6 +1,15 @@
 const loggedUser =
     JSON.parse(localStorage.getItem("loggedUser"));
+if(user.role !== "ADMIN"){
 
+    const usersMenu =
+        document.getElementById("usersMenu");
+
+    if(usersMenu){
+
+        usersMenu.style.display = "none";
+    }
+}
 console.log(loggedUser);
 
 if (!loggedUser) {

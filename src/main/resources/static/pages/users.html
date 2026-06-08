@@ -1,15 +1,21 @@
 <!DOCTYPE html>
+
+
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
-    <title>Flights</title>
+
+    <title>Users Management</title>
 
     <link rel="stylesheet" href="/css/style.css">
+
 </head>
+
 <body>
 
 <header>
-    <h2>Flights</h2>
+    <h2>Airline Reservation System</h2>
 </header>
 
 <nav class="navbar">
@@ -34,18 +40,9 @@
             Reservations List
         </a>
 
-        <a href="/pages/seats.html">
-            Seats
-        </a>
-
-        <a href="/pages/users.html" id="usersMenu">
+        <a href="/pages/users.html">
             Users
         </a>
-
-        <a href="/pages/profile.html">
-            My Profile
-        </a>
-
 
     </div>
 
@@ -55,19 +52,41 @@
 
     <div class="card">
 
-        <h3>Available Flights</h3>
+        <h2>Users Management</h2>
 
-        <button onclick="loadFlights()">
-            Load Flights
-        </button>
+        <table>
 
-        <div id="flights"></div>
+            <thead>
+
+            <tr>
+
+                <th>ID</th>
+
+                <th>Username</th>
+
+                <th>Email</th>
+
+                <th>Role</th>
+
+                <th>Active</th>
+
+                <th>Actions</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody id="usersBody">
+
+            </tbody>
+
+        </table>
 
     </div>
 
 </div>
 
-<script src="/js/flights.js"></script>
+<script src="/js/users.js"></script>
 
 </body>
 </html>

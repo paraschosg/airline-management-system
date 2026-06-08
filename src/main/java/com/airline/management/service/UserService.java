@@ -144,4 +144,26 @@ public class UserService {
             throw new RuntimeException("Error importing");
         }
     }
+
+    public User deactivateUser(Long id) {
+
+        User user =
+                userRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setActive(false);
+
+        return userRepository.save(user);
+    }
+
+    public User activateUser(Long id) {
+
+        User user =
+                userRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setActive(true);
+
+        return userRepository.save(user);
+    }
 }

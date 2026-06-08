@@ -87,4 +87,11 @@ public class UserController {
 
         return userService.register(request);
     }
+
+    @GetMapping("/search")
+    public List<User> searchUsers(
+            @RequestParam String keyword) {
+
+        return userService.searchUsers(keyword);
+    }
 }

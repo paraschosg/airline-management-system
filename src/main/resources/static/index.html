@@ -156,6 +156,7 @@
         <nav id="mainNav">
             <a href="/">Home</a>
             <a href="/pages/flights.html">Flights</a>
+            <a href="/pages/create-flight.html" id="createFlightMenu" style="display:none;">Create Flight</a>
             <a href="/pages/reservations.html">Reservations</a>
             <a href="/pages/reservations-list.html" id="reservationsListMenu">Reservations List</a>
             <a href="/pages/seats.html" id="seatsMenu">Seats</a>
@@ -196,10 +197,24 @@
     document.getElementById("userAvatar").textContent =
         (loggedUser.firstName?.[0] || loggedUser.username?.[0] || '?').toUpperCase();
 
-    if (loggedUser.role !== 'SYSTEM_ADMIN') {
-        document.getElementById("usersMenu").style.display = "none";
-        document.getElementById("reservationsListMenu").style.display = "none";
-        document.getElementById("seatsMenu").style.display = "none";
+    const role = loggedUser.role;
+
+    // Users: μόνο SYSTEM_ADMIN
+    if (role !== 'SYSTEM_ADMIN') {
+        const u = document.getElementById("usersMenu");
+        if (u) u.style.display = "none";
+    }
+
+    // Reservations List: admins (όχι πελάτες)
+    if (role === 'CUSTOMER') {
+        const rl = document.getElementById("reservationsListMenu");
+        if (rl) rl.style.display = "none";
+    }
+
+    // Create Flight: μόνο admins πτήσεων (αν υπάρχει το link στη σελίδα)
+    if (role === 'FLIGHT_ADMIN' || role === 'SYSTEM_ADMIN') {
+        const cf = document.getElementById("createFlightMenu");
+        if (cf) cf.style.display = "inline-block";
     }
 
     function toggleDropdown() {

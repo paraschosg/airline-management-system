@@ -1,84 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <title>Create Flight</title>
-
     <link rel="stylesheet" href="/css/style.css">
-
+    <style>
+        .topbar { background:#003366; display:flex; justify-content:space-between; align-items:center; padding:0 30px; height:60px; }
+        .topbar-logo { color:white; font-size:20px; font-weight:bold; text-decoration:none; }
+        .topbar-right { display:flex; align-items:center; gap:24px; }
+        .topbar nav { display:flex; gap:4px; }
+        .topbar nav a { color:rgba(255,255,255,0.85); text-decoration:none; font-size:14px; padding:6px 10px; border-radius:4px; transition:background 0.2s; }
+        .topbar nav a:hover { background:rgba(255,255,255,0.12); color:white; }
+        .topbar nav a:visited { color:rgba(255,255,255,0.55); }
+        .dropdown { position:relative; }
+        .dropdown-toggle { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.25); color:white; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:14px; display:flex; align-items:center; gap:8px; }
+        .dropdown-toggle:hover { background:rgba(255,255,255,0.2); }
+        .dropdown-arrow { font-size:10px; transition:transform 0.2s; }
+        .dropdown.open .dropdown-arrow { transform:rotate(180deg); }
+        .dropdown-menu { display:none; position:absolute; right:0; top:calc(100% + 8px); background:white; border-radius:8px; box-shadow:0 4px 20px rgba(0,0,0,0.15); min-width:180px; z-index:1000; overflow:hidden; }
+        .dropdown.open .dropdown-menu { display:block; }
+        .dropdown-menu a, .dropdown-menu button { display:block; width:100%; padding:10px 16px; text-align:left; color:#333; text-decoration:none; font-size:14px; background:none; border:none; cursor:pointer; box-sizing:border-box; }
+        .dropdown-menu a:hover, .dropdown-menu button:hover { background:#f0f4ff; color:#003366; }
+        .dropdown-menu .divider { height:1px; background:#eee; margin:4px 0; }
+        .dropdown-menu .logout-btn { color:#cc0000; }
+        .dropdown-menu .logout-btn:hover { background:#fff0f0; }
+        .user-avatar { width:26px; height:26px; background:#0055aa; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:12px; flex-shrink:0; }
+        .field-error { color:#cc0000; font-size:13px; margin:-10px 0 12px 0; display:none; }
+    </style>
 </head>
 <body>
 
-<header>
-    <h2>Create Flight</h2>
-</header>
-
-<div class="container">
-
-    <div class="card">
-
-        <h3>New Flight</h3>
-
-        <form id="flightForm">
-
-            <input
-                    type="text"
-                    id="flightNumber"
-                    placeholder="Flight Number"
-                    required>
-
-            <input
-                    type="text"
-                    id="airplane"
-                    placeholder="Airplane"
-                    required>
-
-            <input
-                    type="date"
-                    id="flightDate"
-                    required>
-
-            <input
-                    type="time"
-                    id="flightTime"
-                    required>
-
-            <input
-                    type="number"
-                    id="totalSeats"
-                    placeholder="Total Seats"
-                    required>
-
-            <input
-                    type="number"
-                    id="totalRows"
-                    placeholder="Total Rows"
-                    required>
-
-            <input
-                    type="number"
-                    id="seatsPerRow"
-                    placeholder="Seats Per Row"
-                    required>
-
-            <input
-                    type="number"
-                    id="businessRows"
-                    placeholder="Business Rows"
-                    required>
-
-            <button type="submit">
-                Create Flight
+<div class="topbar">
+    <a class="topbar-logo" href="/">✈ Airline System</a>
+    <div class="topbar-right">
+        <nav>
+            <a href="/">Home</a>
+            <a href="/pages/flights.html">Flights</a>
+            <a href="/pages/create-flight.html" id="createFlightMenu" style="display:none;">Create Flight</a>
+            <a href="/pages/reservations.html">Reservations</a>
+            <a href="/pages/reservations-list.html" id="reservationsListMenu">Reservations List</a>
+            <a href="/pages/seats.html" id="seatsMenu">Seats</a>
+            <a href="/pages/users.html" id="usersMenu">Users</a>
+        </nav>
+        <div class="dropdown" id="userDropdown">
+            <button class="dropdown-toggle" onclick="toggleDropdown()">
+                <div class="user-avatar" id="userAvatar"></div>
+                <span id="userNameDisplay"></span>
+                <span class="dropdown-arrow">▼</span>
             </button>
-
-        </form>
-
+            <div class="dropdown-menu">
+                <a href="/pages/profile.html">👤 My Profile</a>
+                <div class="divider"></div>
+                <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+            </div>
+        </div>
     </div>
-
 </div>
 
-<script src="/js/create-flight.js"></script>
+<div class="container" style="margin-top:30px;">
+    <div class="card">
+        <h3>New Flight</h3>
+
+        <label>Flight Number</label>
+        <input type="text" id="flightNumber" placeholder="π.χ. AE101">
+        <p class="field-error" id="err-flightNumber"></p>
+
+        <label>Airplane</label>
+        <input type="text" id="airplane" placeholder="π.χ. Airbus A320">
+        <p class="field-error" id="err-airplane"></p>
+
+        <label>Flight Date</label>
+        <input type="date" id="flightDate">
+        <p class="field-error" id="err-flightDate"></p>
+
+        <label>Flight Time</label>
+        <input type="time" id="flightTime">
+        <p class="field-error" id="err-flightTime"></p>
+
+        <label>Total Seats</label>
+        <input type="number" id="totalSeats" placeholder="π.χ. 120">
+        <p class="field-error" id="err-totalSeats"></p>
+
+        <label>Total Rows</label>
+        <input type="number" id="totalRows" placeholder="π.χ. 20">
+        <p class="field-error" id="err-totalRows"></p>
+
+        <label>Seats Per Row</label>
+        <input type="number" id="seatsPerRow" placeholder="π.χ. 6">
+        <p class="field-error" id="err-seatsPerRow"></p>
+
+        <label>Business Rows</label>
+        <input type="number" id="businessRows" placeholder="π.χ. 3">
+        <p class="field-error" id="err-businessRows"></p>
+
+        <button onclick="createFlight()">Create Flight</button>
+        <p id="message"></p>
+    </div>
+</div>
+
+<script>
+    const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+    if (!loggedUser) window.location.href = "/pages/login.html";
+
+    const role = loggedUser.role;
+    if (role !== "FLIGHT_ADMIN" && role !== "SYSTEM_ADMIN") {
+        alert("Access Denied");
+        window.location.href = "/pages/flights.html";
+    }
+
+    const fullName = ((loggedUser.firstName || '') + ' ' + (loggedUser.lastName || '')).trim();
+    document.getElementById("userNameDisplay").textContent = fullName || loggedUser.username;
+    document.getElementById("userAvatar").textContent =
+        (loggedUser.firstName?.[0] || loggedUser.username?.[0] || '?').toUpperCase();
+
+    if (role !== 'SYSTEM_ADMIN') document.getElementById("usersMenu").style.display = "none";
+    if (role === 'CUSTOMER') document.getElementById("reservationsListMenu").style.display = "none";
+    if (role === 'FLIGHT_ADMIN' || role === 'SYSTEM_ADMIN')
+        document.getElementById("createFlightMenu").style.display = "inline-block";
+
+    function toggleDropdown() { document.getElementById("userDropdown").classList.toggle("open"); }
+    document.addEventListener("click", function(e) {
+        const d = document.getElementById("userDropdown");
+        if (!d.contains(e.target)) d.classList.remove("open");
+    });
+    function logout() { localStorage.removeItem("loggedUser"); window.location.href = "/pages/login.html"; }
+
+    function clearErrors() {
+        document.querySelectorAll(".field-error").forEach(e => { e.style.display = "none"; e.textContent = ""; });
+    }
+    function showError(id, msg) {
+        const e = document.getElementById("err-" + id);
+        e.textContent = msg; e.style.display = "block";
+    }
+
+    async function createFlight() {
+        clearErrors();
+        const v = id => document.getElementById(id).value.trim();
+        let ok = true;
+
+        if (!v("flightNumber")) { showError("flightNumber", "Υποχρεωτικό πεδίο"); ok = false; }
+        if (!v("airplane")) { showError("airplane", "Υποχρεωτικό πεδίο"); ok = false; }
+        if (!v("flightDate")) { showError("flightDate", "Υποχρεωτικό πεδίο"); ok = false; }
+        if (!v("flightTime")) { showError("flightTime", "Υποχρεωτικό πεδίο"); ok = false; }
+
+        const nums = ["totalSeats","totalRows","seatsPerRow","businessRows"];
+        nums.forEach(n => {
+            const val = v(n);
+            if (val === "") { showError(n, "Υποχρεωτικό πεδίο"); ok = false; }
+            else if (isNaN(val) || Number(val) < 0) { showError(n, "Μη έγκυρος αριθμός"); ok = false; }
+        });
+
+        if (Number(v("businessRows")) > Number(v("totalRows"))) {
+            showError("businessRows", "Δεν μπορεί να ξεπερνά τις συνολικές σειρές"); ok = false;
+        }
+        if (!ok) return;
+
+        const flight = {
+            flightNumber: v("flightNumber"),
+            airplane: v("airplane"),
+            flightDate: v("flightDate"),
+            flightTime: v("flightTime"),
+            totalSeats: parseInt(v("totalSeats")),
+            totalRows: parseInt(v("totalRows")),
+            seatsPerRow: parseInt(v("seatsPerRow")),
+            businessRows: parseInt(v("businessRows"))
+        };
+
+        const response = await fetch("/flights", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(flight)
+        });
+
+        const msg = document.getElementById("message");
+        if (response.ok) {
+            msg.style.color = "green";
+            msg.textContent = "Η πτήση δημιουργήθηκε!";
+            setTimeout(() => window.location.href = "/pages/flights.html", 800);
+        } else {
+            msg.style.color = "red";
+            msg.textContent = "Αποτυχία — ίσως ο αριθμός πτήσης υπάρχει ήδη.";
+        }
+    }
+</script>
 
 </body>
 </html>
